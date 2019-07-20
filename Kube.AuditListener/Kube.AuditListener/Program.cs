@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Kube.Infrastructure.RabbitMQAgent;
+using System;
 
 namespace Kube.AuditLIstener
 {
@@ -6,7 +7,9 @@ namespace Kube.AuditLIstener
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Console.WriteLine("Starting...");
+            var mqAgent = new RabbitMQAgent();
+            mqAgent.Subscribe();
         }
     }
 }
