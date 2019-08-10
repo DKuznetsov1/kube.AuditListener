@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29020.237
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kube.AuditListener", "Kube.AuditLIstener\Kube.AuditListener.csproj", "{ECB2CBA8-8A78-4A7B-A4E1-34FD33C34C26}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kube.AuditListener", "Kube.AuditListener\Kube.AuditListener.csproj", "{ECB2CBA8-8A78-4A7B-A4E1-34FD33C34C26}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Kube.Business", "Kube.Business", "{FBB1ACB2-5009-4385-897B-5924F0BC1C25}"
 EndProject

@@ -1,7 +1,7 @@
 ﻿using Kube.Infrastructure.RabbitMQAgent;
 using System;
 
-namespace Kube.AuditLIstener
+namespace Kube.AuditListener
 {
     class Program
     {
