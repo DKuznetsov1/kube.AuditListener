@@ -19,6 +19,11 @@ namespace Kube.Infrastructure.RabbitMQAgent
             var factory = new ConnectionFactory() { HostName = "rabbitmq-management-deployment", Port = 5674 };
             this.connection = factory.CreateConnection();
             this.channel = connection.CreateModel();
+
+            channel.ExchangeDeclare(exchange: exchangeName, type: "topic");
+            channel.QueueDeclare(this.queue, true, false, false, null);
+            channel.QueueBind(queue: this.queue, exchange: this.exchangeName, routingKey: "*");
+
             Console.WriteLine(" [*] Waiting for logs.");
 
             var consumer = new EventingBasicConsumer(channel);
