@@ -9,16 +9,19 @@ namespace Kube.Infrastructure.RabbitMQAgent
 {
     public class RabbitMQAgent : IMQAgent
     {
+        private readonly string queue = "kube.audit.queue";
+        private readonly string exchangeName = "kube.audit.exchange";
+
         public void Subscribe()
         {
-            var factory = new ConnectionFactory() { HostName = "localhost", VirtualHost = "kube.vhost" };
+            var factory = new ConnectionFactory() { HostName = "localhost", Port = 5674 };
             using (var connection = factory.CreateConnection())
             using (var channel = connection.CreateModel())
             {
-                ////channel.ExchangeDeclare(exchange: "logs", type: "fanout");
+                channel.ExchangeDeclare(exchange: exchangeName, type: "topic");
 
-                ////var queueName = channel.QueueDeclare().QueueName;
-                ////channel.QueueBind(queue: queueName, exchange: "logs", routingKey: "");
+                var queueName = channel.QueueDeclare(this.queue, true, false, false, null).QueueName;
+                channel.QueueBind(queue: queueName, exchange: this.exchangeName, routingKey: "*");
 
                 Console.WriteLine(" [*] Waiting for logs.");
 
