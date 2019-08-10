@@ -1,4 +1,5 @@
 FROM mcr.microsoft.com/dotnet/core/sdk:2.1 AS build-env
+EXPOSE 5253
 WORKDIR /app
 
 # Copy everything else and build
