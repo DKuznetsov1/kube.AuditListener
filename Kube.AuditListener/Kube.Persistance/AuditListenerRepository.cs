@@ -14,7 +14,11 @@ namespace Kube.Persistance
 
         public AuditListenerRepository()
         {
+            // TODO: remove this
             var connectionString = ConfigurationManager.ConnectionStrings["KubeListenerDb"].ConnectionString;
+#if DEBUG
+            connectionString = connectionString.Replace("mongo-deployment", "localhost", StringComparison.InvariantCultureIgnoreCase);
+#endif
             var connection = new MongoUrlBuilder(connectionString);
             var client = new MongoClient(connectionString);
 

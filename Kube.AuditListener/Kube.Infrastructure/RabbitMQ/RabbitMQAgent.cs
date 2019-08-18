@@ -20,6 +20,7 @@ namespace Kube.Infrastructure.RabbitMQAgent
 
         public void Subscribe(Func<TMessage, Task> subscription)
         {
+            // TODO: remove this
 #if DEBUG
             var factory = new ConnectionFactory() { HostName = "localhost", Port = 5674 };
 #else

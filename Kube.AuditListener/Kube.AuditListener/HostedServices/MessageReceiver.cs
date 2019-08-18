@@ -1,9 +1,8 @@
 ﻿using Kube.Domain.Entities;
 using Kube.Infrastructure.RabbitMQ;
+using Kube.Persistance;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,10 +11,14 @@ namespace Kube.AuditListener.HostedServices
     public class MessageReceiver : IHostedService, IDisposable
     {
         private readonly IMQAgent<Message> mQAgent;
+        private readonly IMongoDbRepository context;
 
-        public MessageReceiver(IMQAgent<Message> mQAgent)
+        public MessageReceiver(
+            IMQAgent<Message> mQAgent,
+            IMongoDbRepository context)
         {
             this.mQAgent = mQAgent;
+            this.context = context;
         }
 
         /// <summary>
@@ -27,11 +30,23 @@ namespace Kube.AuditListener.HostedServices
         {
             Console.WriteLine("Starting Receiving Messages");
 
-            this.mQAgent.Subscribe(message =>
+            this.mQAgent.Subscribe(async message =>
             {
                 Console.WriteLine(" [x] {0}", message);
 
-                return Task.CompletedTask;
+                if (message != null)
+                {
+                    await context.Messages.InsertOneAsync(message);
+                }
+                // TODO: remove this
+                else
+                {
+                    await context.Messages.InsertOneAsync(
+                        new Message()
+                        {
+                            Name = new MongoDB.Bson.ObjectId()
+                        });
+                }
             });
 
             return Task.CompletedTask;

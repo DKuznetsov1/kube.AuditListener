@@ -1,0 +1,1 @@
+kubectl delete -n default deployment audit-listener-app-deployment
