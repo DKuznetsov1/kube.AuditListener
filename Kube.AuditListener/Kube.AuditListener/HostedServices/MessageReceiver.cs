@@ -1,4 +1,5 @@
-﻿using Kube.Infrastructure.RabbitMQ;
+﻿using Kube.Domain.Entities;
+using Kube.Infrastructure.RabbitMQ;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
@@ -10,10 +11,9 @@ namespace Kube.AuditListener.HostedServices
 {
     public class MessageReceiver : IHostedService, IDisposable
     {
-        private readonly IMQAgent mQAgent;
-        private Boolean _running = false;
+        private readonly IMQAgent<Message> mQAgent;
 
-        public MessageReceiver(IMQAgent mQAgent)
+        public MessageReceiver(IMQAgent<Message> mQAgent)
         {
             this.mQAgent = mQAgent;
         }
@@ -27,7 +27,12 @@ namespace Kube.AuditListener.HostedServices
         {
             Console.WriteLine("Starting Receiving Messages");
 
-            this.mQAgent.Subscribe();
+            this.mQAgent.Subscribe(message =>
+            {
+                Console.WriteLine(" [x] {0}", message);
+
+                return Task.CompletedTask;
+            });
 
             return Task.CompletedTask;
         }
@@ -46,7 +51,10 @@ namespace Kube.AuditListener.HostedServices
 
         public void Dispose()
         {
-            mQAgent.Dispose();
+            if (this.mQAgent != null)
+            {
+                this.mQAgent.Dispose();
+            }
         }
     }
 }

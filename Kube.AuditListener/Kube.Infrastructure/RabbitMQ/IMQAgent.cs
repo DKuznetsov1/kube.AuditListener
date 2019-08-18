@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace Kube.Infrastructure.RabbitMQ
 {
-    public interface IMQAgent : IDisposable
+    public interface IMQAgent<TMessage> : IDisposable
+        where TMessage: class
     {
-        void Subscribe();
+        void Subscribe(Func<TMessage, Task> subscription);
     }
 }

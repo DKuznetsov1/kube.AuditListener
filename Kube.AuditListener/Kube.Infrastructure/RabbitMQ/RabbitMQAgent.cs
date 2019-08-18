@@ -1,12 +1,16 @@
 ﻿using Kube.Infrastructure.RabbitMQ;
+using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System;
+using System.Runtime.Serialization;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Kube.Infrastructure.RabbitMQAgent
 {
-    public class RabbitMQAgent : IMQAgent
+    public class RabbitMQAgent<TMessage> : IMQAgent<TMessage>
+        where TMessage: class
     {
         private readonly string queue = "kube.audit.queue";
         private readonly string exchangeName = "kube.audit.exchange";
@@ -14,9 +18,13 @@ namespace Kube.Infrastructure.RabbitMQAgent
         private IConnection connection;
         private IModel channel;
 
-        public void Subscribe()
+        public void Subscribe(Func<TMessage, Task> subscription)
         {
+#if DEBUG
+            var factory = new ConnectionFactory() { HostName = "localhost", Port = 5674 };
+#else
             var factory = new ConnectionFactory() { HostName = "rabbitmq-management-deployment", Port = 5674 };
+#endif
             this.connection = factory.CreateConnection();
             this.channel = connection.CreateModel();
 
@@ -27,20 +35,38 @@ namespace Kube.Infrastructure.RabbitMQAgent
             Console.WriteLine(" [*] Waiting for logs.");
 
             var consumer = new EventingBasicConsumer(channel);
-            consumer.Received += (model, ea) =>
+            consumer.Received += async (model, ea) =>
             {
                 var body = ea.Body;
                 var message = Encoding.UTF8.GetString(body);
-                Console.WriteLine(" [x] {0}", message);
+
+                TMessage messageObject = null;
+                try
+                {
+                    messageObject = JsonConvert.DeserializeObject<TMessage>(message);
+                }
+                catch { }
+
+                if (subscription != null)
+                {
+                    await subscription(messageObject);
+                }
             };
+
             channel.BasicConsume(queue: this.queue, autoAck: true, consumer: consumer);
-            
         }
 
         public void Dispose()
         {
-            channel.Dispose();
-            connection.Dispose();
+            if (channel != null)
+            {
+                channel.Dispose();
+            }
+            
+            if (connection != null)
+            {
+                connection.Dispose();
+            }
         }
     }
 }
