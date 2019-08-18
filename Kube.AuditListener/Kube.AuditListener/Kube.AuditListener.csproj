@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Kube.Infrastructure\Kube.Infrastructure.csproj" />
+    <ProjectReference Include="..\Kube.Persistance\Kube.Persistance.csproj" />
   </ItemGroup>
 
 </Project>

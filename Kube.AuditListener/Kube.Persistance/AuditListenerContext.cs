@@ -1,4 +1,5 @@
-﻿using Kube.Domain.Entities;
+﻿using System.Configuration;
+using Kube.Domain.Entities;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
@@ -10,7 +11,7 @@ namespace Kube.Persistance
 
         public AuditListenerContext()
         {
-            var connectionString = "mongodb://localhost:27017/kubelistener";
+            var connectionString = ConfigurationManager.ConnectionStrings["KubeListenerDb"].ConnectionString;
             var connection = new MongoUrlBuilder(connectionString);
             var client = new MongoClient(connectionString);
             database = client.GetDatabase(connection.DatabaseName);
