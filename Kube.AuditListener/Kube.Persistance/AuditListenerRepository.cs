@@ -10,7 +10,7 @@ namespace Kube.Persistance
     {
         private IMongoDatabase database;
 
-        private Lazy<IDocumentCollection<Message>> _messages;
+        private Lazy<IDocumentCollection<AuditMessage>> _messages;
 
         public AuditListenerRepository()
         {
@@ -23,11 +23,11 @@ namespace Kube.Persistance
             var client = new MongoClient(connectionString);
 
             this.database = client.GetDatabase(connection.DatabaseName);
-            this._messages = new Lazy<IDocumentCollection<Message>>(() => 
-                new DocumentCollection<Message>(database.GetCollection<Message>("Message")), true);
+            this._messages = new Lazy<IDocumentCollection<AuditMessage>>(() => 
+                new DocumentCollection<AuditMessage>(database.GetCollection<AuditMessage>("AuditMessage")), true);
         }
 
-        public IDocumentCollection<Message> Messages
+        public IDocumentCollection<AuditMessage> Messages
         {
             get
             {

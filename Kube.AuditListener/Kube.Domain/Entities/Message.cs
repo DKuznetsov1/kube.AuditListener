@@ -4,8 +4,10 @@ using System;
 namespace Kube.Domain.Entities
 {
     [Serializable]
-    public class Message
+    public class AuditMessage
     {
-        public ObjectId Name { get; set; }
+        public string OperationType { get; set; }
+
+        public DateTime Date { get; set; }
     }
 }

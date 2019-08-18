@@ -10,11 +10,11 @@ namespace Kube.AuditListener.HostedServices
 {
     public class MessageReceiver : IHostedService, IDisposable
     {
-        private readonly IMQAgent<Message> mQAgent;
+        private readonly IMQAgent<AuditMessage> mQAgent;
         private readonly IMongoDbRepository context;
 
         public MessageReceiver(
-            IMQAgent<Message> mQAgent,
+            IMQAgent<AuditMessage> mQAgent,
             IMongoDbRepository context)
         {
             this.mQAgent = mQAgent;
@@ -42,7 +42,7 @@ namespace Kube.AuditListener.HostedServices
                 else
                 {
                     await context.Messages.InsertOneAsync(
-                        new Message()
+                        new AuditMessage()
                         {
                             Name = new MongoDB.Bson.ObjectId()
                         });

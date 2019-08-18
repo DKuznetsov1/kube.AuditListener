@@ -5,6 +5,6 @@ namespace Kube.Persistance
 {
     public interface IMongoDbRepository
     {
-        IDocumentCollection<Message> Messages { get; }
+        IDocumentCollection<AuditMessage> Messages { get; }
     }
 }
