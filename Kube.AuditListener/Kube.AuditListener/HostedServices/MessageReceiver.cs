@@ -44,7 +44,7 @@ namespace Kube.AuditListener.HostedServices
                     await context.Messages.InsertOneAsync(
                         new AuditMessage()
                         {
-                            Name = new MongoDB.Bson.ObjectId()
+                            Id = new MongoDB.Bson.ObjectId()
                         });
                 }
             });

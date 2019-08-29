@@ -1,7 +1,8 @@
 ﻿using System;
-using System.Configuration;
+using Kube.Configuration.Configuration;
 using Kube.Domain.Entities;
 using Kube.Persistance.Infrastructure;
+using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
 namespace Kube.Persistance
@@ -11,11 +12,11 @@ namespace Kube.Persistance
         private IMongoDatabase database;
 
         private Lazy<IDocumentCollection<AuditMessage>> _messages;
+        private readonly IOptions<ALDatabaseConnection> config;
 
-        public AuditListenerRepository()
+        public AuditListenerRepository(IOptions<ALDatabaseConnection> config)
         {
-            // TODO: remove this
-            var connectionString = ConfigurationManager.ConnectionStrings["KubeListenerDb"].ConnectionString;
+            var connectionString = config.Value.ConnectionString;
 #if DEBUG
             connectionString = connectionString.Replace("mongo-deployment", "localhost", StringComparison.InvariantCultureIgnoreCase);
 #endif
@@ -23,7 +24,7 @@ namespace Kube.Persistance
             var client = new MongoClient(connectionString);
 
             this.database = client.GetDatabase(connection.DatabaseName);
-            this._messages = new Lazy<IDocumentCollection<AuditMessage>>(() => 
+            this._messages = new Lazy<IDocumentCollection<AuditMessage>>(() =>
                 new DocumentCollection<AuditMessage>(database.GetCollection<AuditMessage>("AuditMessage")), true);
         }
 

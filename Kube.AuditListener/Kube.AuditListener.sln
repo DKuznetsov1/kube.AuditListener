@@ -3,19 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29020.237
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kube.AuditListener", "Kube.AuditListener\Kube.AuditListener.csproj", "{ECB2CBA8-8A78-4A7B-A4E1-34FD33C34C26}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kube.AuditListener", "Kube.AuditListener\Kube.AuditListener.csproj", "{ECB2CBA8-8A78-4A7B-A4E1-34FD33C34C26}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Kube.Business", "Kube.Business", "{FBB1ACB2-5009-4385-897B-5924F0BC1C25}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kube.Queries", "Kube.Queries\Kube.Queries.csproj", "{188DE116-F350-4F08-801C-DB75B3EAF68C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kube.Queries", "Kube.Queries\Kube.Queries.csproj", "{188DE116-F350-4F08-801C-DB75B3EAF68C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kube.Infrastructure", "Kube.Infrastructure\Kube.Infrastructure.csproj", "{A01798F0-69AC-4CE5-91F3-605B31958784}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kube.Infrastructure", "Kube.Infrastructure\Kube.Infrastructure.csproj", "{A01798F0-69AC-4CE5-91F3-605B31958784}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kube.Commands", "Kube.Commands\Kube.Commands.csproj", "{8D0D955F-4160-40F8-82D5-D2F833E88F25}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kube.Commands", "Kube.Commands\Kube.Commands.csproj", "{8D0D955F-4160-40F8-82D5-D2F833E88F25}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kube.Persistance", "Kube.Persistance\Kube.Persistance.csproj", "{D6D4070D-7F2B-4561-A689-E525708BBDDB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kube.Persistance", "Kube.Persistance\Kube.Persistance.csproj", "{D6D4070D-7F2B-4561-A689-E525708BBDDB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kube.Domain", "Kube.Domain\Kube.Domain.csproj", "{A4C8B393-D9EB-405D-A455-C769E7CA0485}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kube.Domain", "Kube.Domain\Kube.Domain.csproj", "{A4C8B393-D9EB-405D-A455-C769E7CA0485}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kube.Configuration", "Kube.Configuration\Kube.Configuration.csproj", "{EC02EBF9-8021-4365-B356-00909D295DB8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +49,10 @@ Global
 		{A4C8B393-D9EB-405D-A455-C769E7CA0485}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A4C8B393-D9EB-405D-A455-C769E7CA0485}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A4C8B393-D9EB-405D-A455-C769E7CA0485}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC02EBF9-8021-4365-B356-00909D295DB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC02EBF9-8021-4365-B356-00909D295DB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC02EBF9-8021-4365-B356-00909D295DB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC02EBF9-8021-4365-B356-00909D295DB8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
