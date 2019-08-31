@@ -12,7 +12,6 @@ namespace Kube.Persistance
         private IMongoDatabase database;
 
         private Lazy<IDocumentCollection<AuditMessage>> _messages;
-        private readonly IOptions<ALDatabaseConnection> config;
 
         public AuditListenerRepository(IOptions<ALDatabaseConnection> config)
         {
