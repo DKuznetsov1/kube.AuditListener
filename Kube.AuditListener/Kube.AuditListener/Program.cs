@@ -1,14 +1,14 @@
-﻿using System.IO;
-using Kube.AuditListener.HostedServices;
+﻿using Kube.AuditListener.HostedServices;
 using Kube.Infrastructure.RabbitMQ;
 using Kube.Infrastructure.RabbitMQAgent;
 using Kube.Persistance;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Serilog;
 using System.Threading.Tasks;
 using Kube.Configuration.Configuration;
 using Microsoft.Extensions.Configuration;
+using System.IO;
 
 namespace Kube.AuditListener
 {
@@ -16,16 +16,31 @@ namespace Kube.AuditListener
     {
         public static async Task Main(string[] args)
         {
+
+
             IConfiguration configuration = null;
 
             var builder = new HostBuilder()
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
+                    var configurationSettingsString = "appsettings.json";
+
+#if DEBUG
+                    configurationSettingsString = "appsettings.Development.json";
+#endif
+
                     configuration = config
                         .SetBasePath(Directory.GetCurrentDirectory())
-                        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                        .AddJsonFile(configurationSettingsString, optional: false, reloadOnChange: true)
                         .AddEnvironmentVariables() 
                         .Build();
+
+                    var loggerConfiguration = configuration.GetSection("Logging").Get<ALLogging>();
+
+                    Log.Logger = new LoggerConfiguration()
+                        .WriteTo.InfluxDB(loggerConfiguration.Measurment, loggerConfiguration.ConnectionString, loggerConfiguration.Db)
+                        .Enrich.WithProperty("loggername", loggerConfiguration.Measurment)
+                        .CreateLogger();
                 })
                 .ConfigureServices((hostContext, services) =>
                 {
@@ -36,10 +51,7 @@ namespace Kube.AuditListener
                     services.Configure<ALDatabaseConnection>(configuration.GetSection("Connection:Database"));
                     services.Configure<ALQueueConnection>(configuration.GetSection("Connection:Queue"));
                 })
-                .ConfigureLogging((hostingContext, logging) =>
-                {
-                    logging.AddConsole();   
-                });
+                .UseSerilog();
 
             await builder.RunConsoleAsync();
         }
