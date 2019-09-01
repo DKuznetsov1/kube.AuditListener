@@ -10,6 +10,16 @@
 
     }
 
+    public class ALLogging
+    {
+        public string ConnectionString { get; set; }
+
+        public string Db { get; set; }
+
+        public string Measurment { get; set; }
+    }
+
+
     public class ALDatabaseConnection
     {
         public string ConnectionString { get; set; }

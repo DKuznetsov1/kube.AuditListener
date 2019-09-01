@@ -2,6 +2,7 @@
 using Kube.Infrastructure.RabbitMQ;
 using Kube.Persistance;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,13 +13,16 @@ namespace Kube.AuditListener.HostedServices
     {
         private readonly IMQAgent<AuditMessage> mQAgent;
         private readonly IMongoDbRepository context;
+        private readonly ILogger<MessageReceiver> logger;
 
         public MessageReceiver(
             IMQAgent<AuditMessage> mQAgent,
-            IMongoDbRepository context)
+            IMongoDbRepository context,
+            ILogger<MessageReceiver> logger)
         {
             this.mQAgent = mQAgent;
             this.context = context;
+            this.logger = logger;
         }
 
         /// <summary>
@@ -28,24 +32,13 @@ namespace Kube.AuditListener.HostedServices
         /// <returns></returns>
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            Console.WriteLine("Starting Receiving Messages");
-
             this.mQAgent.Subscribe(async message =>
             {
-                Console.WriteLine(" [x] {0}", message);
+                logger.LogInformation("Message received;{message.OperationType}");
 
                 if (message != null)
                 {
                     await context.Messages.InsertOneAsync(message);
-                }
-                // TODO: remove this
-                else
-                {
-                    await context.Messages.InsertOneAsync(
-                        new AuditMessage()
-                        {
-                            Id = new MongoDB.Bson.ObjectId()
-                        });
                 }
             });
 
